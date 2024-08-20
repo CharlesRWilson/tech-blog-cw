@@ -1,20 +1,28 @@
-require('dotenv').config();
 const { Sequelize } = require('sequelize');
+require('dotenv').config();
 
-let sequelize;
-// Checks to see if the application is deployed. If DB_URL environment variable exists, then that is used. If not, it determines that you're on your local machine and utilizes the environment variables from the .env file to set up Sequelize. 
-if (process.env.DB_URL) {
-  sequelize = new Sequelize(process.env.DB_URL);
-} else {
-  sequelize = new Sequelize(
-    process.env.DB_NAME,
-    process.env.DB_USER,
-    process.env.DB_PASSWORD,
-    {
-      host: 'localhost',
-      dialect: 'postgres'
-    }
-  );
-}
+const sequelize = new Sequelize('postgres', 'postgres', 'password', {
+  host: process.env.DB_HOST || 'localhost',
+  dialect: 'postgres',
+  port: process.env.DB_PORT || 3011,
+  logging: false, // Disable logging if needed
+  define: {
+    timestamps: true, 
+  },
+});
 
-module.exports = sequelize;
+sequelize.authenticate()
+  .then(() => {
+    console.log('Connection has been established successfully.');
+  })
+  .catch(err => {
+    console.error('Unable to connect to the database:', err);
+  });
+
+  console.log('DB_NAME:', process.env.DB_NAME);
+console.log('DB_USER:', process.env.DB_USER);
+console.log('DB_PASSWORD:', process.env.DB_PASSWORD); // Ensure this prints correctly
+console.log('DB_HOST:', process.env.DB_HOST);
+console.log('DB_PORT:', process.env.DB_PORT);
+
+  module.exports = sequelize;
