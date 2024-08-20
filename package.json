@@ -5,9 +5,7 @@
   "main": "index.js",
   "scripts": {
     "build": "babel src -d lib",
-    "test": "jest",
-    "start": "node server.js",
-    "postinstall": "npm rebuild bcrypt"
+    "test": "jest"
   },
   "keywords": [],
   "author": "",
