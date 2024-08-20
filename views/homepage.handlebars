@@ -1,37 +1,24 @@
-{{!-- views/homepage.handlebars --}}
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Tech Blog</title>
-  <link rel="stylesheet" href="/css/style.css">
-</head>
-<body>
-  <header>
-    <h1>Tech Blog</h1>
-    <nav>
-      <a href="/">Home</a>
-      {{#if loggedIn}}
-        <a href="/dashboard">Dashboard</a>
-        <a href="#" id="logout">Logout</a>
-      {{else}}
-        <a href="/login">Login</a>
-        <a href="/signup">Signup</a>
-      {{/if}}
-    </nav>
-  </header>
-  <div class="container">
-    {{#each posts}}
-      <div class="post">
-        <h2><a href="/post/{{this.id}}">{{this.title}}</a></h2>
-        <p>{{format_date this.createdAt}} by {{this.user.username}}</p>
-        <p>{{this.content}}</p>
-      </div>
-    {{else}}
-      <p>No posts yet</p>
-    {{/each}}
+<!-- Loop over each object in the projects array -->
+{{#each projects as |project| }}
+<div class="row mb-4 project">
+  <div class="col-md-5">
+    <h2>
+      <!-- Call helper function with triple brackets to render the emoji span as HTML -->
+      {{{get_emoji}}}
+      <a href="/project/{{project.id}}">{{project.name}}</a>
+    </h2>
+    <p>
+      <span for="img" aria-label="money">💲</span>
+      <!-- Pass needed_funding value to the helper function -->
+      {{!-- <span class="dollar-amount">{{format_amount project.needed_funding}}</span> --}}
+      {{!-- needed! --}}
+    </p>
+    <p>Created by {{project.user.name}} on {{format_date project.date_created}}</p>
   </div>
-  <script src="/js/logout.js"></script>
-</body>
-</html>
+  <div class="col-md-7">
+    <p>
+      {{project.description}}
+    </p>
+  </div>
+</div>
+{{/each}}
